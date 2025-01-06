@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.body.appendChild(popup);
 
-    setTimeout(urlToFinalPage, 2000);
+   // setTimeout(urlToFinalPage, 2000);
     document.addEventListener("mousemove", urlToFinalPage, { once: true });
     document.addEventListener("click", urlToFinalPage, { once: true });
     document.addEventListener("touchstart", urlToFinalPage, { once: true });
