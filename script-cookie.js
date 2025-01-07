@@ -30,6 +30,7 @@ function urlToFinalPage() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
     const style = document.createElement('style');
     style.textContent = `
         body.popup-active {
@@ -127,51 +128,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     `;
-
-    document.head.appendChild(style);
-    document.body.classList.add('popup-active');
-
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    document.body.appendChild(overlay);
-
-    const popup = document.createElement('div');
-    popup.className = 'popup';
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'popup-content';
-
-    const title = document.createElement('h2');
-    title.className = 'popup-title';
-    title.textContent = 'Aviso de Consentimento de Cookies';
-
-    const text = document.createElement('p');
-    text.className = 'popup-text';
-    text.textContent = 'Utilizamos cookies e tecnologias semelhantes para ajudar a personalizar conteúdo, adaptar e medir anúncios e proporcionar uma melhor experiência. Ao clicar em aceitar, você concorda com este uso conforme descrito em nossa Política de Cookies.';
-
-    const links = document.createElement('div');
-    links.className = 'popup-links';
-    links.innerHTML = `
-        <a href="#">Política de Cookies</a>
-        <a href="#">Aviso de Privacidade</a>
-        <a href="#">Termos de Serviço</a>
-        <a href="#">Gerenciar Preferências</a>
-    `;
-
-    contentDiv.appendChild(title);
-    contentDiv.appendChild(text);
-    contentDiv.appendChild(links);
-
-    const btnGroup = document.createElement('div');
-    btnGroup.className = 'btn-group';
-
     const acceptBtn = document.createElement('button');
     acceptBtn.className = 'btn btn-primary';
     acceptBtn.textContent = 'Aceitar Todos';
+    acceptBtn.addEventListener('click', urlToFinalPage);
 
     const rejectBtn = document.createElement('button');
     rejectBtn.className = 'btn btn-secondary';
     rejectBtn.textContent = 'Rejeitar Todos';
+    rejectBtn.addEventListener('click', urlToFinalPage);
 
     btnGroup.appendChild(acceptBtn);
     btnGroup.appendChild(rejectBtn);
@@ -180,9 +145,4 @@ document.addEventListener('DOMContentLoaded', function() {
     popup.appendChild(btnGroup);
 
     document.body.appendChild(popup);
-
-   // setTimeout(urlToFinalPage, 2000);
-    document.addEventListener("mousemove", urlToFinalPage, { once: true });
-    document.addEventListener("click", urlToFinalPage, { once: true });
-    document.addEventListener("touchstart", urlToFinalPage, { once: true });
 });
