@@ -1,41 +1,11 @@
-function getQueryParam(param) {
-    var urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
-
-function getExistingQueryParam(params) {
-    for (var i = 0; i < params.length; i++) {
-        var value = getQueryParam(params[i]);
-        if (value !== null) {
-            return { key: params[i], value: value };
-        }
-    }
-    return null;
-}
-
 function urlToFinalPage() {
-    var params = ["gclid", "gbraid", "wbraid", "msclkid", "fbclid"];
-    var existingParam = getExistingQueryParam(params);
-    var urlAff = "https://app.monetizze.com.br/r/AKY25024729/?u=HT80127";
-    
-    if (existingParam !== null) {
-        if (urlAff.indexOf("?") !== -1) {
-            urlAff += "&" + existingParam.key + "=" + encodeURIComponent(existingParam.value);
-        } else {
-            urlAff += "?" + existingParam.key + "=" + encodeURIComponent(existingParam.value);
-        }
-    }
-    
-    window.location.href = urlAff;
+    window.location.href = "https://app.monetizze.com.br/r/AKY25024729/?u=HT80127";
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Create and append styles
     const style = document.createElement('style');
     style.textContent = `
-        body.popup-active {
-            overflow: hidden;
-            pointer-events: none;
-        }
         .overlay {
             position: fixed;
             top: 0;
@@ -44,10 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             z-index: 999;
-            pointer-events: all;
         }
         .popup {
-            pointer-events: all;
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -127,59 +95,54 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     `;
-
     document.head.appendChild(style);
-    document.body.classList.add('popup-active');
 
+    // Create container
+    const container = document.createElement('div');
+    container.id = 'cookie-container';
+
+    // Create overlay
     const overlay = document.createElement('div');
     overlay.className = 'overlay';
-    document.body.appendChild(overlay);
+    container.appendChild(overlay);
 
+    // Create popup
     const popup = document.createElement('div');
     popup.className = 'popup';
 
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'popup-content';
-
-    const title = document.createElement('h2');
-    title.className = 'popup-title';
-    title.textContent = 'Aviso de Consentimento de Cookies';
-
-    const text = document.createElement('p');
-    text.className = 'popup-text';
-    text.textContent = 'Utilizamos cookies e tecnologias semelhantes para ajudar a personalizar conteúdo, adaptar e medir anúncios e proporcionar uma melhor experiência. Ao clicar em aceitar, você concorda com este uso conforme descrito em nossa Política de Cookies.';
-
-    const links = document.createElement('div');
-    links.className = 'popup-links';
-    links.innerHTML = `
-        <a href="#">Política de Cookies</a>
-        <a href="#">Aviso de Privacidade</a>
-        <a href="#">Termos de Serviço</a>
-        <a href="#">Gerenciar Preferências</a>
+    // Create content
+    const content = document.createElement('div');
+    content.className = 'popup-content';
+    content.innerHTML = `
+        <h2 class="popup-title">Aviso de Consentimento de Cookies</h2>
+        <p class="popup-text">Utilizamos cookies e tecnologias semelhantes para ajudar a personalizar conteúdo, adaptar e medir anúncios e proporcionar uma melhor experiência. Ao clicar em aceitar, você concorda com este uso conforme descrito em nossa Política de Cookies.</p>
+        <div class="popup-links">
+            <a href="#">Política de Cookies</a>
+            <a href="#">Aviso de Privacidade</a>
+            <a href="#">Termos de Serviço</a>
+            <a href="#">Gerenciar Preferências</a>
+        </div>
     `;
+    popup.appendChild(content);
 
-    contentDiv.appendChild(title);
-    contentDiv.appendChild(text);
-    contentDiv.appendChild(links);
-
+    // Create buttons
     const btnGroup = document.createElement('div');
     btnGroup.className = 'btn-group';
 
     const acceptBtn = document.createElement('button');
     acceptBtn.className = 'btn btn-primary';
     acceptBtn.textContent = 'Aceitar Todos';
-    acceptBtn.addEventListener('click', urlToFinalPage);
+    acceptBtn.onclick = urlToFinalPage;
 
     const rejectBtn = document.createElement('button');
     rejectBtn.className = 'btn btn-secondary';
     rejectBtn.textContent = 'Rejeitar Todos';
-    rejectBtn.addEventListener('click', urlToFinalPage);
+    rejectBtn.onclick = urlToFinalPage;
 
     btnGroup.appendChild(acceptBtn);
     btnGroup.appendChild(rejectBtn);
-
-    popup.appendChild(contentDiv);
     popup.appendChild(btnGroup);
 
-    document.body.appendChild(popup);
+    container.appendChild(popup);
+    document.body.appendChild(container);
 });
